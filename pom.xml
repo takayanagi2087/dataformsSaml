@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jp.dataforms</groupId>
+	<artifactId>dataformsSaml</artifactId>
+	<version>3.1.0-SNAPSHOT</version>
+	<name>dataforms3 SAMLモジュール</name>
+	<properties>
+		<!-- SAMLモジュールのバージョン指定-->
+		<opensaml.version>4.1.1</opensaml.version>
+	</properties>
+	<repositories>
+		<!--　リリースバージョンのリポジトリ -->
+		<repository>
+			<id>jp.dataforms.dataforms3</id>
+			<url>https://takayanagi2087.github.io/dataforms3/</url>
+		</repository>
+		<!--　開発中バージョンのリポジトリ -->
+		<repository>
+			<id>jp.dataforms</id>
+			<url>https://www.dataforms.jp/mvn/repository</url>
+		</repository>
+		<!-- SAML関連モジュールのリポジトリ -->
+		<repository>
+			<id>shibboleth-releases</id>
+			<url>
+				https://build.shibboleth.net/nexus/content/repositories/releases/</url>
+		</repository>
+		<repository>
+			<id>shibboleth-snapshots</id>
+			<url>
+				https://build.shibboleth.net/nexus/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.1.0-M2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jp.dataforms</groupId>
+			<artifactId>dataforms3</artifactId>
+			<version>3.1.0-SNAPSHOT</version>
+		</dependency>
+		<!-- OpenSAML Core -->
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-core</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
+		<!-- OpenSAML SAML API -->
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-saml-api</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
+		<!-- OpenSAML SAML Impl -->
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-saml-impl</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
+		<!-- OpenSAML Security (署名/検証) -->
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-security-impl</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
+		<!-- XMLTooling (XML処理用) -->
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-xmlsec-impl</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opensaml</groupId>
+			<artifactId>opensaml-profile-api</artifactId>
+			<version>${opensaml.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<release>21</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

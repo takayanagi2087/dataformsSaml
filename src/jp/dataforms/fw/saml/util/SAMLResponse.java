@@ -49,59 +49,59 @@ public class SAMLResponse extends SAMLParameter {
 		return xml;
 	}
 	
-    /**
-     * XMLからSAML Responseを取得する。
-     * @param xml XMLテキスト。
-     * @return SAML Response。
-     * @throws Exception 例外。
-     */
-    protected Response getSamlResponse(final String xml) throws Exception {
-    	DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    	factory.setNamespaceAware(true);
-    	DocumentBuilder builder = factory.newDocumentBuilder();
-    	Document document = null;
-    	try (ByteArrayInputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))) {
-    		document = builder.parse(is);
-    	}
-    	Element element = document.getDocumentElement();
-    	XMLObject xmlObject = XMLObjectProviderRegistrySupport.getUnmarshallerFactory()
-    	        .getUnmarshaller(element)
-    	        .unmarshall(element);
-    	return (Response) xmlObject;
-    }
-    
-    /**
-     * SAML応答情報を確認します。
-     * @param r SAML応答情報。
-     */
-    protected void validate(final Response r) throws Exception {
-		X509Certificate  idpCert = this.getIdpMetadata().getSigningX509Certificate();
+	/**
+	 * XMLからSAML Responseを取得する。
+	 * @param xml XMLテキスト。
+	 * @return SAML Response。
+	 * @throws Exception 例外。
+	 */
+	protected Response getSamlResponse(final String xml) throws Exception {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document document = null;
+		try (ByteArrayInputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))) {
+			document = builder.parse(is);
+		}
+		Element element = document.getDocumentElement();
+		XMLObject xmlObject = XMLObjectProviderRegistrySupport.getUnmarshallerFactory()
+				.getUnmarshaller(element)
+				.unmarshall(element);
+		return (Response) xmlObject;
+	}
+
+	/**
+	 * SAML応答情報を確認します。
+	 * @param r SAML応答情報。
+	 */
+	protected void validate(final Response r) throws Exception {
+		X509Certificate idpCert = this.getIdpMetadata().getSigningX509Certificate();
 		BasicX509Credential credential = new BasicX509Credential(idpCert);
 		if (r.getSignature() != null) {
 			SignatureValidator.validate(r.getSignature(), credential);
 		} else {
 			r.getAssertions().forEach((assertion) -> {
-		        if (assertion.getSignature() != null) {
-		            try {
-		                SignatureValidator.validate(assertion.getSignature(), credential);
-		            } catch (Exception e) {
-		                throw new RuntimeException(e.getMessage(), e);
-		            }
-		        }
-		    });
+				if (assertion.getSignature() != null) {
+					try {
+						SignatureValidator.validate(assertion.getSignature(), credential);
+					} catch (Exception e) {
+						throw new RuntimeException(e.getMessage(), e);
+					}
+				}
+			});
 		}
 		String entryID = this.getSpMetadata().getEntryID();
 		r.getAssertions().forEach(assertion -> {
-		    assertion.getConditions().getAudienceRestrictions().forEach(audienceRestriction -> {
-		        audienceRestriction.getAudiences().forEach(audience -> {
-		            String audienceURI = audience.getURI();
-		            if (!entryID.equals(audienceURI)) {
-		                throw new RuntimeException("AudienceRestriction NG: " + audienceURI);
-		            }
-		        });
-		    });
-		});			
-    }
+			assertion.getConditions().getAudienceRestrictions().forEach(audienceRestriction -> {
+				audienceRestriction.getAudiences().forEach(audience -> {
+					String audienceURI = audience.getURI();
+					if (!entryID.equals(audienceURI)) {
+						throw new RuntimeException("AudienceRestriction NG: " + audienceURI);
+					}
+				});
+			});
+		});
+	}
 	
 	/**
 	 * ユーザ情報を出力。
@@ -116,7 +116,7 @@ public class SAMLResponse extends SAMLParameter {
 					String attrName = attr.getName();
 					attr.getAttributeValues().forEach(value -> {
 						String attrValue = value.getDOM().getTextContent();
-//						out.println(attrName + " = " + attrValue);
+						//						out.println(attrName + " = " + attrValue);
 						ret.put(attrName, attrValue);
 					});
 				});
@@ -124,7 +124,7 @@ public class SAMLResponse extends SAMLParameter {
 		});
 		return ret;
 	}
-    
+
 	/**
 	 * ユーザー情報を取得します。
 	 * @param samlResponse SAMLの応答情報。

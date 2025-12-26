@@ -61,9 +61,9 @@ public class SPMetadata extends Metadata {
 		XPathFactory xPathFactory = XPathFactory.newInstance();
 		XPath xpath = xPathFactory.newXPath();
 		xpath.setNamespaceContext(this.getNamespaceContext());
-        String expression = "/md:EntityDescriptor/@entityID";
-        XPathExpression expr = xpath.compile(expression);
-        String entityID = (String) expr.evaluate(this.getDocument(), XPathConstants.STRING);
+		String expression = "/md:EntityDescriptor/@entityID";
+		XPathExpression expr = xpath.compile(expression);
+		String entityID = (String) expr.evaluate(this.getDocument(), XPathConstants.STRING);
 		logger.debug("entityID=" + entityID);
 		return entityID;
 	}
@@ -77,9 +77,9 @@ public class SPMetadata extends Metadata {
 		XPathFactory xPathFactory = XPathFactory.newInstance();
 		XPath xpath = xPathFactory.newXPath();
 		xpath.setNamespaceContext(this.getNamespaceContext());
-        String expression = "//md:AssertionConsumerService/@Location";
-        XPathExpression expr = xpath.compile(expression);
-        String location = (String) expr.evaluate(this.getDocument(), XPathConstants.STRING);
+		String expression = "//md:AssertionConsumerService/@Location";
+		XPathExpression expr = xpath.compile(expression);
+		String location = (String) expr.evaluate(this.getDocument(), XPathConstants.STRING);
 		logger.debug("AcsURL=" + location);
 		return location;
 	}

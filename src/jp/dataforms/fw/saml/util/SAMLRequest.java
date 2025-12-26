@@ -54,76 +54,73 @@ public class SAMLRequest extends SAMLParameter {
 	 * @return 認証要求情報。
 	 */
 	protected AuthnRequest buildAuthnRequest(String issuerValue, String acsUrl, String destination, String entityID) {
-        XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+		XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
 
-        // AuthnRequest Builder
-        AuthnRequestBuilder authnRequestBuilder = 
-            (AuthnRequestBuilder) builderFactory.getBuilder(AuthnRequest.DEFAULT_ELEMENT_NAME);
-        AuthnRequest authnRequest = authnRequestBuilder.buildObject();
+		// AuthnRequest Builder
+		AuthnRequestBuilder authnRequestBuilder = (AuthnRequestBuilder) builderFactory
+				.getBuilder(AuthnRequest.DEFAULT_ELEMENT_NAME);
+		AuthnRequest authnRequest = authnRequestBuilder.buildObject();
 
-        // 設定
-        authnRequest.setID("_" + java.util.UUID.randomUUID()); // 一意なID
-        authnRequest.setVersion(SAMLVersion.VERSION_20);
-        authnRequest.setIssueInstant(Instant.now());
-        authnRequest.setDestination(destination); // IdPのSSOエンドポイントURL
-        authnRequest.setForceAuthn(false);
-        authnRequest.setIsPassive(false);
+		// 設定
+		authnRequest.setID("_" + java.util.UUID.randomUUID()); // 一意なID
+		authnRequest.setVersion(SAMLVersion.VERSION_20);
+		authnRequest.setIssueInstant(Instant.now());
+		authnRequest.setDestination(destination); // IdPのSSOエンドポイントURL
+		authnRequest.setForceAuthn(false);
+		authnRequest.setIsPassive(false);
 
-        // Issuer
-        IssuerBuilder issuerBuilder = 
-            (IssuerBuilder) builderFactory.getBuilder(Issuer.DEFAULT_ELEMENT_NAME);
-        Issuer issuer = issuerBuilder.buildObject();
-        issuer.setValue(issuerValue);
-        authnRequest.setIssuer(issuer);
+		// Issuer
+		IssuerBuilder issuerBuilder = (IssuerBuilder) builderFactory.getBuilder(Issuer.DEFAULT_ELEMENT_NAME);
+		Issuer issuer = issuerBuilder.buildObject();
+		issuer.setValue(issuerValue);
+		authnRequest.setIssuer(issuer);
 
-        // NameIDPolicy
-        NameIDPolicyBuilder nameIDPolicyBuilder = 
-            (NameIDPolicyBuilder) builderFactory.getBuilder(NameIDPolicy.DEFAULT_ELEMENT_NAME);
-        NameIDPolicy nameIDPolicy = nameIDPolicyBuilder.buildObject();
-        nameIDPolicy.setFormat(NameIDType.TRANSIENT);
-        nameIDPolicy.setAllowCreate(true);
-        authnRequest.setNameIDPolicy(nameIDPolicy);
+		// NameIDPolicy
+		NameIDPolicyBuilder nameIDPolicyBuilder = (NameIDPolicyBuilder) builderFactory
+				.getBuilder(NameIDPolicy.DEFAULT_ELEMENT_NAME);
+		NameIDPolicy nameIDPolicy = nameIDPolicyBuilder.buildObject();
+		nameIDPolicy.setFormat(NameIDType.TRANSIENT);
+		nameIDPolicy.setAllowCreate(true);
+		authnRequest.setNameIDPolicy(nameIDPolicy);
 
-        // AssertionConsumerServiceURL
-        authnRequest.setAssertionConsumerServiceURL(acsUrl);
+		// AssertionConsumerServiceURL
+		authnRequest.setAssertionConsumerServiceURL(acsUrl);
 
-        // ProtocolBinding (通常はHTTP-POST)
-        authnRequest.setProtocolBinding(SAMLConstants.SAML2_POST_BINDING_URI);
+		// ProtocolBinding (通常はHTTP-POST)
+		authnRequest.setProtocolBinding(SAMLConstants.SAML2_POST_BINDING_URI);
 
-        return authnRequest;
-    }    
-
-
-    /**
-	 * 認証要求情報をXMLファイルに変換します。
-     * @param authnRequest 認証要求情報。
-     * @return XMLファイル。
-     * @throws Exception 例外。
-     */
-	protected String toXMLString(AuthnRequest authnRequest) throws Exception {
-        MarshallerFactory marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
-        Marshaller marshaller = marshallerFactory.getMarshaller(authnRequest);
-        Element element = marshaller.marshall(authnRequest);
-
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-        java.io.StringWriter writer = new java.io.StringWriter();
-        transformer.transform(new DOMSource(element), new StreamResult(writer));
-
-        String xml = writer.toString();
-        logger.debug("AuthnRequest xml=" + xml);
-        return xml;
+		return authnRequest;
 	}
-    
 
-    /**
-     * XMLリクエストをBase64エンコードします。
-     * @param xmlRequest XMLリクエスト。
-     * @return Base64エンコード結果。
-     * @throws Exception 例外。
-     */
+	/**
+	 * 認証要求情報をXMLファイルに変換します。
+	 * @param authnRequest 認証要求情報。
+	 * @return XMLファイル。
+	 * @throws Exception 例外。
+	 */
+	protected String toXMLString(AuthnRequest authnRequest) throws Exception {
+		MarshallerFactory marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
+		Marshaller marshaller = marshallerFactory.getMarshaller(authnRequest);
+		Element element = marshaller.marshall(authnRequest);
+
+		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+		java.io.StringWriter writer = new java.io.StringWriter();
+		transformer.transform(new DOMSource(element), new StreamResult(writer));
+
+		String xml = writer.toString();
+		logger.debug("AuthnRequest xml=" + xml);
+		return xml;
+	}
+
+	/**
+	 * XMLリクエストをBase64エンコードします。
+	 * @param xmlRequest XMLリクエスト。
+	 * @return Base64エンコード結果。
+	 * @throws Exception 例外。
+	 */
 	protected String encodeAuthnRequest(String xmlRequest) throws Exception {
 		// Deflate圧縮
 		Deflater deflater = new Deflater(Deflater.DEFLATED, true);
@@ -141,8 +138,7 @@ public class SAMLRequest extends SAMLParameter {
 		// URLエンコード
 		return URLEncoder.encode(base64, "UTF-8");
 	}
-
-    
+	
 	/**
 	 * SAML認証要求情報含めたリダイレクションURLを取得します。
 	 * @return リダイレクションURL。
@@ -153,15 +149,15 @@ public class SAMLRequest extends SAMLParameter {
 		String acsURL = this.getSpMetadata().getAcsURL();
 		String idpSSOUrl = this.getIdpMetadata().getHttpRedirectURL();
 		AuthnRequest ar = this.buildAuthnRequest(
-			entryID, // Issuer(EntityID)
-			acsURL, // ACS URL
-			idpSSOUrl, // IdPのSSOエンドポイント
-			entryID // SP EntityID
+				entryID, // Issuer(EntityID)
+				acsURL, // ACS URL
+				idpSSOUrl, // IdPのSSOエンドポイント
+				entryID // SP EntityID
 		);
-	    String xml = this.toXMLString(ar);
-	    String enc = this.encodeAuthnRequest(xml);
-	    String redirectUrl = idpSSOUrl + "?SAMLRequest=" + enc;
-	    logger.debug("redirectUrl=" + redirectUrl);
-	    return redirectUrl;
+		String xml = this.toXMLString(ar);
+		String enc = this.encodeAuthnRequest(xml);
+		String redirectUrl = idpSSOUrl + "?SAMLRequest=" + enc;
+		logger.debug("redirectUrl=" + redirectUrl);
+		return redirectUrl;
 	}
 }

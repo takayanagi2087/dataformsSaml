@@ -43,11 +43,17 @@ public class IdPMetadata extends Metadata {
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		}
-
 	}
 	
 	
-	
+	/**
+	 * IdPメタデータのパスを取得します。
+	 * @return IdPメタデータのパス。
+	 */
+	public static String getMetadata() {
+		return metadata;
+	}
+
 	/**
 	 * コンストラクタ。
 	 * @throws Exception 例外。
@@ -65,10 +71,10 @@ public class IdPMetadata extends Metadata {
 		XPathFactory xPathFactory = XPathFactory.newInstance();
 		XPath xpath = xPathFactory.newXPath();
 		xpath.setNamespaceContext(this.getNamespaceContext());
-        String expression = "//md:KeyDescriptor[@use='signing']//ds:X509Certificate";
-        XPathExpression expr = xpath.compile(expression);
-        Node node = (Node) expr.evaluate(this.getDocument(), XPathConstants.NODE);
-        return node.getTextContent();
+		String expression = "//md:KeyDescriptor[@use='signing']//ds:X509Certificate";
+		XPathExpression expr = xpath.compile(expression);
+		Node node = (Node) expr.evaluate(this.getDocument(), XPathConstants.NODE);
+		return node.getTextContent();
 	}
 	
 	/**
@@ -76,29 +82,29 @@ public class IdPMetadata extends Metadata {
 	 * @return 署名検証用の証明書。
 	 * @throws Exception 例外。
 	 */
-    public X509Certificate getSigningX509Certificate() throws Exception {
-    	String base64cert = this.getSigningX509CertificateText();
-    	String cleaned = base64cert.replaceAll("\\s+", "");
-    	byte[] decoded = Base64.getDecoder().decode(cleaned);
-    	CertificateFactory factory = CertificateFactory.getInstance("X.509");
-    	X509Certificate cert = (X509Certificate) factory.generateCertificate(new java.io.ByteArrayInputStream(decoded));
-    	logger.debug("X509Certificate=" + cert);
-    	return cert;
-    }
-    
-    /**
-     * IdPへのリダイレクションURLを取得します。
-     * @return IdPへのリダイレクションURL。
-     * @throws Exception 例外。
-     */
-    public String getHttpRedirectURL() throws Exception {
+	public X509Certificate getSigningX509Certificate() throws Exception {
+		String base64cert = this.getSigningX509CertificateText();
+		String cleaned = base64cert.replaceAll("\\s+", "");
+		byte[] decoded = Base64.getDecoder().decode(cleaned);
+		CertificateFactory factory = CertificateFactory.getInstance("X.509");
+		X509Certificate cert = (X509Certificate) factory.generateCertificate(new java.io.ByteArrayInputStream(decoded));
+		logger.debug("X509Certificate=" + cert);
+		return cert;
+	}
+
+	/**
+	 * IdPへのリダイレクションURLを取得します。
+	 * @return IdPへのリダイレクションURL。
+	 * @throws Exception 例外。
+	 */
+	public String getHttpRedirectURL() throws Exception {
 		XPathFactory xPathFactory = XPathFactory.newInstance();
 		XPath xpath = xPathFactory.newXPath();
 		xpath.setNamespaceContext(this.getNamespaceContext());
-        String expression = "//md:SingleSignOnService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']/@Location";
-        XPathExpression expr = xpath.compile(expression);
-        String url = (String) expr.evaluate(this.getDocument(), XPathConstants.STRING);
-    	logger.debug("HttpRedirectURL=" + url);
-    	return url;
-    }
+		String expression = "//md:SingleSignOnService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']/@Location";
+		XPathExpression expr = xpath.compile(expression);
+		String url = (String) expr.evaluate(this.getDocument(), XPathConstants.STRING);
+		logger.debug("HttpRedirectURL=" + url);
+		return url;
+	}
 }

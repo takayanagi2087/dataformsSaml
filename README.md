@@ -57,15 +57,13 @@ dataformsSaml.jarは、dataforms3.jar(3.1.0-SNAPSHOT以降のバージョン)で
 IdPの認証が成功するとdataforms3.jarのユーザーテーブルを検索し、対応するユーザーが存在した場合そのユーザーでログインします。<br>
 その認証手順は以下のようになります。<br>
 
-```
-1 ./dataforms/app/top/page/TopPage.htmlをアクセスするとjp.dataforms.fw.app.top.page.TopPageクラスが動作。
-2 ログインしていない場合TopPage#toLoginPageを呼び出す。
-3 TopPage#toLoginPageではシステム内にjp.dataforms.fw.saml.page.SamlLoginPageが存在するかチェックし存在した場合./dataforms/saml/page/SamlLoginPage.htmlに遷移。
-　存在しない場合/dataforms/app/login/page/LoginPage.htmlに遷移する。
-4.SamlLoginPageはIdPメタデータにしたがって、IdPのログイン画面に遷移する。
-5.IdPはSPメタデータにしたがって、./dataforms/saml/page/SamlAcsPage.htmlに認証結果をPOSTする。
-6.SamlAcsPage.htmlに対応するjp.dataforms.fw.saml.page.SamlAcsPageでは認証結果の正当性を確認し、問題なければdataformsのユーザーテーブルの権限設定に従ってユーザのセッションを作成し、サイトマップに遷移する。
-```
+1 ./dataforms/app/top/page/TopPage.htmlをアクセスするとjp.dataforms.fw.app.top.page.TopPageクラスが動作。<br>
+2 ログインしていない場合TopPage#toLoginPageを呼び出す。<br>
+3 TopPage#toLoginPageではシステム内にjp.dataforms.fw.saml.page.SamlLoginPageが存在するかチェックし存在した場合./dataforms/saml/page/SamlLoginPage.htmlに遷移する。<br>
+　存在しない場合/dataforms/app/login/page/LoginPage.htmlに遷移する。<br>
+4.SamlLoginPageはIdPメタデータにしたがって、IdPのログイン画面に遷移する。<br>
+5.IdPはSPメタデータにしたがって、./dataforms/saml/page/SamlAcsPage.htmlに認証結果をPOSTする。<br>
+6.SamlAcsPage.htmlに対応するjp.dataforms.fw.saml.page.SamlAcsPageでは認証結果の正当性を確認し、問題なければdataformsのユーザーテーブルの権限設定に従ってユーザのセッションを作成し、サイトマップに遷移する。<br>
 
 ## Customization
 ### SAML認証,dataforms認証の併用

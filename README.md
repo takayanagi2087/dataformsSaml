@@ -1,13 +1,13 @@
 # dataformsSaml.jar dataforms3.jar 用SAML認証モジュール.
 
 ## Description
-dataformsSaml.jarは、dataforms3.jarで作成したWebアプリケーションでSAML認証をサポートする機能を提供します。
+dataformsSaml.jarは、dataforms3.jar(3.1.0-SNAPSHOT以降のバージョン)で作成したWebアプリケーションにSAML認証機能を追加します。
 
 ## Install
 
 * SPメタデータの作成。
 * SPメタデータをIdPに登録し、IdPメタデータを取得。
-* IdPのログインIDと同じログインIDのユーザをdataforms3.jarのユーザー管理で登録。
+* IdPのログインIDと同じログインIDのユーザをdataformsのユーザー管理で登録。
 * dataforms3.jar (3.1.0-SNAPSHOT以降のバージョン)のプロジェクトでこのモジュールを追加。
 
 ``` 
@@ -36,7 +36,12 @@ dataformsSaml.jarは、dataforms3.jarで作成したWebアプリケーション�
 	<Environment name="samlLoginIdKey" value="UserID" type="java.lang.String" override="false" />
 ```
 
+この状態でアプリケーションをアクセスするとIdPが提供する認証画面に遷移します。
+IdPの認証が成功するとdataforms3.jarのユーザーテーブルを検索し、対応するユーザーが存在した場合そのユーザーでログインします。
 
+## Customization
+### SAML認証,dataforms認証の切り替え
+### dataformsのユーザーテーブルを使用せずにログインする方法
 
 ## Requirement
 

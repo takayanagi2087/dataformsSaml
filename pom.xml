@@ -33,6 +33,14 @@
 				https://build.shibboleth.net/nexus/content/repositories/snapshots/</url>
 		</repository>
 	</repositories>
+	<!-- デプロイ先の設定 -->
+	<distributionManagement>
+		<repository>
+			<id>deploy-repository</id>
+			<name>deployRepository</name>
+			<url>${env.RREP}</url>
+		</repository>
+	</distributionManagement>	
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
 		<dependency>

@@ -156,7 +156,9 @@ public class SAMLRequest extends SAMLParameter {
 		);
 		String xml = this.toXMLString(ar);
 		String enc = this.encodeAuthnRequest(xml);
-		String redirectUrl = idpSSOUrl + "?SAMLRequest=" + enc;
+		// String redirectUrl = idpSSOUrl + "?SAMLRequest=" + enc;
+		String redirectUrl = idpSSOUrl.indexOf("?") < 0 ? (idpSSOUrl + "?SAMLRequest=" + enc) : (idpSSOUrl + "&SAMLRequest=" + enc) ;
+		
 		logger.debug("redirectUrl=" + redirectUrl);
 		return redirectUrl;
 	}

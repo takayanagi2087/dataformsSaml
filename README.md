@@ -32,7 +32,7 @@ dataformsSaml.jarは、dataforms3.jar(3.1.0-SNAPSHOT以降のバージョン)で
 		<dependency>
 			<groupId>jp.dataforms</groupId>
 			<artifactId>dataformsSaml</artifactId>
-			<version>3.1.0-SNAPSHOT</version>
+			<version>3.1.1</version>
 		</dependency>
 	</dependencies>
 ```
@@ -84,3 +84,5 @@ HogeAcsPageではloginメソッドをオーバーライドし、このメソッ�
 ## Licence
 [MIT](https://github.com/takayanagi2087/dataforms/blob/master/LICENSE)
 
+## History
+2026/11/26  Version 3.1.1 GoogleのIdPに対応。
